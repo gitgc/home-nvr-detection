@@ -1,0 +1,29 @@
+(logs_external_https) {
+  log {
+    output file /var/log/caddy/caddy-https-external.log {
+      roll_size 1MiB
+      roll_keep 5
+      roll_keep_for 168h
+    }
+    format console
+  }
+}
+(https_header) {
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubdomains"
+    X-XSS-Protection "1; mode=block"
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "SAMEORIGIN"
+    Referrer-Policy "same-origin"
+  }
+}
+
+nvr.coia.me {
+  #import https_header
+  reverse_proxy 192.168.1.233:5000
+  import logs_external_https
+  encode gzip
+  tls {
+    dns digitalocean {env.DO_AUTH_TOKEN}
+  }
+}

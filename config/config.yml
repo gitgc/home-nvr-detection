@@ -1,0 +1,83 @@
+mqtt:
+  host: mqtt
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+cameras:
+  workshop-yard:
+    ffmpeg:
+      hwaccel_args: &defaultHardwareAccelArgs
+        - -hwaccel
+        - vaapi
+        - -hwaccel_device
+        - /dev/dri/renderD128
+        - -hwaccel_output_format
+        - yuv420p
+      inputs:
+        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.223:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+          roles:
+            - rtmp
+            - record
+            - detect
+    rtmp: &defaultRTMPArgs
+      enabled: True
+    detect: &defaultDectectArgs
+      width: 1280
+      height: 1024
+      fps: 5
+    objects: &objectsCarAndPerson
+      track:
+        - person
+        - car
+    record: &defaultRecordArgs
+      enabled: True
+      retain:
+        mode: motion
+        days: 7
+      events:
+        retain:
+          default: 14
+          mode: motion
+    snapshots: &defaultSnapshotArgs
+      timestamp: True
+      bounding_box: True
+      crop: True
+      enabled: True
+    motion:
+      mask:
+        - 0,0,366,0,439,139,418,233,312,310,295,520,0,592
+
+  garage-yard:
+    ffmpeg:
+      hwaccel_args: *defaultHardwareAccelArgs
+      inputs:
+        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.168:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+          roles:
+            - rtmp
+            - record
+            - detect
+    rtmp: *defaultRTMPArgs
+    detect: *defaultDectectArgs
+    objects: *objectsCarAndPerson
+    record: *defaultRecordArgs
+    snapshots: *defaultSnapshotArgs
+
+  front-door:
+    ffmpeg:
+      hwaccel_args: *defaultHardwareAccelArgs
+      inputs:
+        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.148:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+          roles:
+            - rtmp
+            - record
+            - detect
+    rtmp: *defaultRTMPArgs
+    detect: *defaultDectectArgs
+    objects:
+      track:
+        - person
+    record: *defaultRecordArgs
+    snapshots: *defaultSnapshotArgs

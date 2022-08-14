@@ -1,0 +1,58 @@
+services:
+  frigate:
+    container_name: frigate
+    privileged: true
+    restart: unless-stopped
+    image: blakeblackshear/frigate:0.11.0-rc1
+    shm_size: "512mb"
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /home/gcoia/frigate/config/config.yml:/config/config.yml:ro
+      - /media/nvr:/media/frigate
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    ports:
+      - "5000:5000"
+      - "1935:1935"
+    environment:
+      - FRIGATE_RTSP_USER
+      - FRIGATE_RTSP_PASSWORD
+    depends_on:
+      - mqtt
+      - amcrest2mqtt
+
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto:1.6
+    ports:
+      - "1883:1883"
+
+  amcrest2mqtt:
+    container_name: amcrest2mqtt
+    image: dchesterton/amcrest2mqtt:latest
+    restart: unless-stopped
+    environment:
+        - AMCREST_HOST
+        - AMCREST_PASSWORD
+        - MQTT_HOST=mqtt
+        - MQTT_USERNAME=admin
+        - HOME_ASSISTANT=true
+
+  caddy:
+    container_name: frigate-caddy
+    build: .
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DO_AUTH_TOKEN
+    volumes:
+      - "./Caddyfile:/etc/caddy/Caddyfile"
+      - "./site/:/var/www/html/"
+      - "./caddy_data/:/data/"
+      - "./caddy_config/:/config/"
