@@ -21,7 +21,7 @@
 nvr.coia.me {
   #import https_header
   rewrite /cockpit /cockpit/
-  reverse_proxy /cockpit/* https://nvr.coia.me:9090 {
+  reverse_proxy /cockpit/* https://host.docker.internal:9090 {
     transport http {
       tls_insecure_skip_verify
     }
