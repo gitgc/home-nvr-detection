@@ -1,3 +1,4 @@
+# Add in Home Assitant Automation UI. Handles doorbell press notifications.
 alias: Kitchen doorbell press notifications
 description: ""
 trigger:
