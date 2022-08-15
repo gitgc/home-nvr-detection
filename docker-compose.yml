@@ -55,3 +55,5 @@ services:
       - "./site/:/var/www/html/"
       - "./caddy_data/:/data/"
       - "./caddy_config/:/config/"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
