@@ -36,11 +36,11 @@ services:
     image: dchesterton/amcrest2mqtt:latest
     restart: unless-stopped
     environment:
-        - AMCREST_HOST
-        - AMCREST_PASSWORD
-        - MQTT_HOST=mqtt
-        - MQTT_USERNAME=admin
-        - HOME_ASSISTANT=true
+      - AMCREST_HOST
+      - AMCREST_PASSWORD
+      - MQTT_HOST=mqtt
+      - MQTT_USERNAME=admin
+      - HOME_ASSISTANT=true
 
   caddy:
     container_name: frigate-caddy
