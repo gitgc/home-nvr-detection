@@ -20,7 +20,7 @@
 
 nvr.coia.me {
   #import https_header
-  reverse_proxy 192.168.1.233:5000
+  reverse_proxy frigate:5000
   import logs_external_https
   encode gzip
   tls {
