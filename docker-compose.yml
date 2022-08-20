@@ -42,8 +42,8 @@ services:
       - HOME_ASSISTANT=true
 
   caddy:
+    build: ./caddy
     container_name: frigate-caddy
-    build: .
     restart: unless-stopped
     ports:
       - "80:80"
@@ -52,8 +52,16 @@ services:
       - DO_AUTH_TOKEN
     volumes:
       - "./Caddyfile:/etc/caddy/Caddyfile"
-      - "./site/:/var/www/html/"
-      - "./caddy_data/:/data/"
-      - "./caddy_config/:/config/"
+      - "./caddy/site/:/var/www/html/"
+      - "./caddy/caddy_data/:/data/"
+      - "./caddy/caddy_config/:/config/"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "http://localhost/caddy-health-check" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    depends_on:
+      - home-assistant
