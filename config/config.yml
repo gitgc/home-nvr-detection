@@ -21,7 +21,7 @@ cameras:
         - yuv420p
       inputs:
         - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.223:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
-          roles:
+          roles: &defaultExteriorRoles
             - rtmp
             - record
             - detect
@@ -37,15 +37,12 @@ cameras:
         - car
     record:
       enabled: True
-      retain:
+      retain: &defaultExteriorRetain
         mode: motion
-        days: 7
+        days: 14
       events:
         required_zones:
           - yard
-        retain:
-          default: 14
-          mode: motion
     snapshots: &defaultSnapshotArgs
       timestamp: True
       bounding_box: True
@@ -63,23 +60,16 @@ cameras:
       hwaccel_args: *defaultHardwareAccelArgs
       inputs:
         - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.168:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
-          roles:
-            - rtmp
-            - record
-            - detect
+          roles: *defaultExteriorRoles
     rtmp: *defaultRTMPArgs
     detect: *defaultDectectArgs
     objects: *objectsCarAndPerson
     record:
-      retain:
-        mode: motion
-        days: 7
+      enabled: True
+      retain: *defaultExteriorRetain
       events:
         required_zones:
           - yard
-        retain:
-          default: 14
-          mode: motion    
     snapshots: *defaultSnapshotArgs
     zones:
       parking_bay:
@@ -87,55 +77,25 @@ cameras:
       yard:
         coordinates: 1280,0,0,0,0,229,621,170,698,299,857,348,946,459,946,1024,1280,1024
 
-  front-door:
-    ffmpeg:
-      hwaccel_args: *defaultHardwareAccelArgs
-      inputs:
-        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.148:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
-          roles:
-            - rtmp
-            - record
-            - detect
-    rtmp: *defaultRTMPArgs
-    detect: *defaultDectectArgs
-    objects:
-      track:
-        - person
-    record:
-      enabled: True
-      retain:
-        mode: motion
-        days: 7
-      events:
-        required_zones:
-          - porch
-        retain:
-          default: 14
-          mode: motion    
-    snapshots: *defaultSnapshotArgs
-    zones:
-      porch:
-        coordinates: 1280,1024,0,1024,0,0,1280,0,1280,423,526,392,524,577,546,754,778,778,1012,594,1155,592,1280,595
-
   living-room:
     ffmpeg:
       hwaccel_args: *defaultHardwareAccelArgs
       inputs:
         - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.89:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
-          roles:
+          roles: &defaultInteriorRoles
             - rtmp
             - detect
     rtmp: *defaultRTMPArgs
-    detect:
+    detect: &defaultInteriorDetectArgs
       width: 1280
       height: 960
       fps: 5
-    objects:
+    objects: &defaultInteriorObjectsArgs
       track:
         - person
-    record:
+    record: &defaultInteriorRecordArgs
       enabled: False
-    snapshots:
+    snapshots: &defaultInteriorSnapshotArgs
       enabled: False
 
   dining-room:
@@ -143,18 +103,29 @@ cameras:
       hwaccel_args: *defaultHardwareAccelArgs
       inputs:
         - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.229:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
-          roles:
-            - rtmp
-            - detect
+          roles: *defaultInteriorRoles
     rtmp: *defaultRTMPArgs
-    detect:
-      width: 1280
-      height: 960
-      fps: 5
-    objects:
-      track:
-        - person
+    detect: *defaultInteriorDetectArgs
+    objects: *defaultInteriorObjectsArgs
+    record: *defaultInteriorRecordArgs
+    snapshots: *defaultInteriorSnapshotArgs
+
+  front-door:
+    ffmpeg:
+      hwaccel_args: *defaultHardwareAccelArgs
+      inputs:
+        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.148:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+          roles: *defaultExteriorRoles
+    rtmp: *defaultRTMPArgs
+    detect: *defaultDectectArgs
+    objects: *defaultInteriorObjectsArgs
     record:
-      enabled: False
-    snapshots:
-      enabled: False
+      enabled: True
+      retain: *defaultExteriorRetain
+      events:
+        required_zones:
+          - porch
+    snapshots: *defaultSnapshotArgs
+    zones:
+      porch:
+        coordinates: 1280,1024,0,1024,0,0,1280,0,1280,423,526,392,524,577,546,754,778,778,1012,594,1155,592,1280,595
