@@ -22,7 +22,7 @@ nvr.coia.me {
   #import https_header
   respond /caddy-health-check 200
   rewrite /cockpit /cockpit/
-  reverse_proxy /cockpit/* https://host.docker.internal:9090 {
+  reverse_proxy /cockpit/* https://localhost:9090 {
     transport http {
       tls_insecure_skip_verify
     }
