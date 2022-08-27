@@ -28,7 +28,7 @@ nvr.coia.me {
     }
   }
   
-  reverse_proxy frigate:5000
+  reverse_proxy http://localhost:5000
   import logs_external_https
   encode gzip
   tls {
