@@ -31,7 +31,7 @@ services:
 
   scrypted:
       image: koush/scrypted
-      container_name: scrypted
+      container_name: frigate-scrypted
       restart: unless-stopped
       environment:
         - SCRYPTED_SECURE_PORT=443
