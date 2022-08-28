@@ -30,19 +30,17 @@ services:
       - mqtt
 
   scrypted:
-      image: koush/scrypted
-      container_name: frigate-scrypted
-      restart: unless-stopped
-      environment:
-        - SCRYPTED_SECURE_PORT=443
-        - SCRYPTED_INSECURE_PORT=80
-      volumes:
-          - ./scrypted:/server/volume
-      logging:
-          driver: "json-file"
-          options:
-              max-size: "10m"
-              max-file: "10"
+    image: koush/scrypted
+    container_name: frigate-scrypted
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./scrypted:/server/volume
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
 
   mqtt:
     container_name: mqtt
