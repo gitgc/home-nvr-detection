@@ -1,7 +1,7 @@
 {
   order authenticate before respond
   order authorize before reverse_proxy
- 
+
   acme_dns digitalocean {env.DO_AUTH_TOKEN}
 
   security {
@@ -18,7 +18,7 @@
       crypto key sign-verify {env.JWT_SHARED_KEY}
       enable identity provider google
       cookie domain {env.CADDY_DOMAIN}
-      
+
       ui {
         links {
           "My Identity" "/whoami" icon "las la-user"
@@ -28,7 +28,7 @@
       transform user {
         match realm google
         action add role authp/user
-        ui link "NVR" https://nvr.{$CADDY_DOMAIN}/ icon "las la-star"
+        ui link "NVR" https://{$CADDY_SUBDOMAIN}.{$CADDY_DOMAIN}/ icon "las la-star"
       }
 
       transform user {
@@ -37,7 +37,7 @@
         action add role authp/admin
       }
     }
-  
+
     authorization policy mypolicy {
       set auth url https://auth.{$CADDY_DOMAIN}/oauth2/google
       crypto key verify {env.JWT_SHARED_KEY}
@@ -63,11 +63,11 @@ auth.{$CADDY_DOMAIN} {
   authenticate with myportal
 }
 
-nvr.{$CADDY_DOMAIN} {
+{$CADDY_SUBDOMAIN}.{$CADDY_DOMAIN} {
   encode gzip
-  
+
   #import https_header
-  
+
   @remote_host_filter {
     not remote_ip 192.168.1.101
     not remote_ip 100.120.36.116
@@ -75,11 +75,11 @@ nvr.{$CADDY_DOMAIN} {
   }
 
   handle @remote_host_filter {
-    authorize with mypolicy 
+    authorize with mypolicy
   }
 
   respond /caddy-health-check 200
-  
+
   rewrite /cockpit /cockpit/
 
   reverse_proxy /cockpit/* https://host.docker.internal:9090 {
@@ -87,6 +87,6 @@ nvr.{$CADDY_DOMAIN} {
       tls_insecure_skip_verify
     }
   }
-  
-  reverse_proxy http://frigate:5000
+
+  reverse_proxy {env.CADDY_PROXY_UPSTREAM}
 }
