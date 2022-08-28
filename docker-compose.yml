@@ -22,7 +22,6 @@ services:
       - FRIGATE_RTSP_PASSWORD
     depends_on:
       - mqtt
-      - amcrest2mqtt
 
   mqtt:
     container_name: mqtt
@@ -40,6 +39,8 @@ services:
       - MQTT_HOST=mqtt
       - MQTT_USERNAME=admin
       - HOME_ASSISTANT=true
+    depends_on:
+      - mqtt
 
   caddy:
     build: ./caddy
@@ -58,7 +59,7 @@ services:
       - GOOGLE_CLIENT_SECRET
       - JWT_SHARED_KEY
     volumes:
-      - "./Caddyfile:/etc/caddy/Caddyfile"
+      - "./Caddyfile:/etc/caddy/Caddyfile:ro"
       - "./caddy/site/:/var/www/html/"
       - "./caddy/caddy_data/:/data/"
       - "./caddy/caddy_config/:/config/"
