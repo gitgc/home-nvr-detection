@@ -29,6 +29,19 @@ services:
     depends_on:
       - mqtt
 
+  scrypted:
+    image: koush/scrypted
+    container_name: frigate-scrypted
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./scrypted:/server/volume
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+
   mqtt:
     container_name: mqtt
     image: eclipse-mosquitto:1.6
