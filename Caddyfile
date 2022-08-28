@@ -1,13 +1,53 @@
-(logs_external_https) {
-  log {
-    output file /var/log/caddy/caddy-https-external.log {
-      roll_size 1MiB
-      roll_keep 5
-      roll_keep_for 168h
+{
+  order authenticate before respond
+  order authorize before reverse_proxy
+ 
+  acme_dns digitalocean {env.DO_AUTH_TOKEN}
+
+  security {
+    oauth identity provider google {
+      realm google
+      driver google
+      client_id {env.GOOGLE_CLIENT_ID}
+      client_secret {env.GOOGLE_CLIENT_SECRET}
+      scopes openid email profile
     }
-    format console
+
+    authentication portal myportal {
+      crypto default token lifetime 3600
+      crypto key sign-verify {env.JWT_SHARED_KEY}
+      enable identity provider google
+      cookie domain {env.CADDY_DOMAIN}
+      
+      ui {
+        links {
+          "My Identity" "/whoami" icon "las la-user"
+        }
+      }
+
+      transform user {
+        match realm google
+        action add role authp/user
+        ui link "NVR" https://nvr.{$CADDY_DOMAIN}/ icon "las la-star"
+      }
+
+      transform user {
+        match realm google
+        match email {env.CADDY_ADMIN}
+        action add role authp/admin
+      }
+    }
+  
+    authorization policy mypolicy {
+      set auth url https://auth.{$CADDY_DOMAIN}/oauth2/google
+      crypto key verify {env.JWT_SHARED_KEY}
+      allow roles authp/admin authp/user
+      validate bearer header
+      inject headers with claims
+    }
   }
 }
+
 (https_header) {
   header {
     Strict-Transport-Security "max-age=31536000; includeSubdomains"
@@ -18,20 +58,35 @@
   }
 }
 
-nvr.coia.me {
+auth.{$CADDY_DOMAIN} {
+  encode gzip
+  authenticate with myportal
+}
+
+nvr.{$CADDY_DOMAIN} {
+  encode gzip
+  
   #import https_header
+  
+  @remote_host_filter {
+    not remote_ip 192.168.1.101
+    not remote_ip 100.120.36.116
+    not path /caddy-health-check
+  }
+
+  handle @remote_host_filter {
+    authorize with mypolicy 
+  }
+
   respond /caddy-health-check 200
+  
   rewrite /cockpit /cockpit/
-  reverse_proxy /cockpit/* https://localhost:9090 {
+
+  reverse_proxy /cockpit/* https://host.docker.internal:9090 {
     transport http {
       tls_insecure_skip_verify
     }
   }
   
-  reverse_proxy http://localhost:5000
-  import logs_external_https
-  encode gzip
-  tls {
-    dns digitalocean {env.DO_AUTH_TOKEN}
-  }
+  reverse_proxy http://frigate:5000
 }
