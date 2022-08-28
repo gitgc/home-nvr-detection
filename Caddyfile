@@ -48,16 +48,6 @@
   }
 }
 
-(https_header) {
-  header {
-    Strict-Transport-Security "max-age=31536000; includeSubdomains"
-    X-XSS-Protection "1; mode=block"
-    X-Content-Type-Options "nosniff"
-    X-Frame-Options "SAMEORIGIN"
-    Referrer-Policy "same-origin"
-  }
-}
-
 auth.{$CADDY_DOMAIN} {
   encode gzip
   authenticate with myportal
@@ -65,8 +55,6 @@ auth.{$CADDY_DOMAIN} {
 
 {$CADDY_SUBDOMAIN}.{$CADDY_DOMAIN} {
   encode gzip
-
-  #import https_header
 
   @remote_host_filter {
     not remote_ip 192.168.1.101
@@ -89,4 +77,14 @@ auth.{$CADDY_DOMAIN} {
   }
 
   reverse_proxy {$CADDY_PROXY_UPSTREAM}
+}
+
+scrypted.{$CADDY_DOMAIN} {
+  encode gzip
+
+  reverse_proxy https://scrypted:10433 {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
 }
