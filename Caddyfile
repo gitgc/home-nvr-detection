@@ -78,9 +78,3 @@ auth.{$CADDY_DOMAIN} {
 
   reverse_proxy {$CADDY_PROXY_UPSTREAM}
 }
-
-scrypted.{$CADDY_DOMAIN} {
-  encode gzip
-
-  reverse_proxy http://host.docker.internal:11080
-}
