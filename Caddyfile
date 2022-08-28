@@ -88,5 +88,5 @@ auth.{$CADDY_DOMAIN} {
     }
   }
 
-  reverse_proxy {env.CADDY_PROXY_UPSTREAM}
+  reverse_proxy {$CADDY_PROXY_UPSTREAM}
 }
