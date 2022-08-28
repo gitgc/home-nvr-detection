@@ -34,6 +34,12 @@ services:
     image: eclipse-mosquitto:1.6
     ports:
       - "1883:1883"
+    healthcheck:
+      test: [ "CMD", "timeout", "1", "mosquitto_sub", "-h", "localhost", "-p", "1883", "-t", "'topic'", "-E", "-i", "probe" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
 
   amcrest2mqtt:
     container_name: amcrest2mqtt
