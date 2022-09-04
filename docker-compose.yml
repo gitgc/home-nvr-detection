@@ -30,6 +30,7 @@ services:
       start_period: 60s
     depends_on:
       - mqtt
+
   scrypted:
     image: koush/scrypted
     container_name: frigate-scrypted
@@ -69,7 +70,7 @@ services:
       - mqtt
 
   frigate-home-proxy:
-    build: ./home-proxy-webserver
+    image: ghcr.io/gitgc/home-proxy-webserver:main
     container_name: frigate-home-proxy
     restart: unless-stopped
     ports:
