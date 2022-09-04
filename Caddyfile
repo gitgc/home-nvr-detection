@@ -89,5 +89,21 @@ scrypted.{$CADDY_DOMAIN} {
 
   import auth
 
-  reverse_proxy http://host.docker.internal:11080
+  reverse_proxy https://host.docker.internal:10443 {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
+}
+
+network.{$CADDY_DOMAIN} {
+  encode gzip
+
+  import auth
+
+  reverse_proxy https://unifi.coia.me {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
 }
