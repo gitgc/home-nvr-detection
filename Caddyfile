@@ -52,6 +52,7 @@
   @remote_host_filter {
     not remote_ip 192.168.1.101
     not remote_ip 100.120.36.116
+    not remote_ip 192.168.1.94
     not path /caddy-health-check
   }
 
