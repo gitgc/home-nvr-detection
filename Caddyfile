@@ -30,7 +30,7 @@
         action add role authp/user
         ui link "Home Assistant" https://home.{$CADDY_DOMAIN}/ icon "las la-home"
         ui link "Unifi" https://network.{$CADDY_DOMAIN}/ icon "las la-wifi"
-        ui link "Frigate" https://{$CADDY_SUBDOMAIN}.{$CADDY_DOMAIN}/ icon "las la-video-camera"
+        ui link "Frigate" https://{$CADDY_SUBDOMAIN}.{$CADDY_DOMAIN}/ icon "las la-video"
         ui link "Scrypted" https://scrypted.{$CADDY_DOMAIN}/ icon "las la-cogs"
       }
 
