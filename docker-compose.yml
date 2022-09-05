@@ -17,7 +17,7 @@ services:
         tmpfs:
           size: 1000000000
     ports:
-      - "1935:1935"
+      - 1935:1935
     environment:
       - FRIGATE_DOMAIN=${CADDY_DOMAIN}
       - FRIGATE_RTSP_USER
@@ -48,7 +48,7 @@ services:
     container_name: mqtt
     image: eclipse-mosquitto:1.6
     ports:
-      - "1883:1883"
+      - 1883:1883
     healthcheck:
       test: [ "CMD", "timeout", "1", "mosquitto_sub", "-h", "localhost", "-p", "1883", "-t", "'topic'", "-E", "-i", "probe" ]
       interval: 30s
@@ -74,18 +74,14 @@ services:
     container_name: frigate-home-proxy
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     environment:
       - CADDY_SUBDOMAIN
       - CADDY_DOMAIN
       - CADDY_PROXY_UPSTREAM
       - CADDY_HEALTH_CHECK_URI
-      - CADDY_ADMIN
       - DO_AUTH_TOKEN
-      - GOOGLE_CLIENT_ID
-      - GOOGLE_CLIENT_SECRET
-      - JWT_SHARED_KEY
     volumes:
       - "./Caddyfile:/etc/caddy/Caddyfile:ro"
       - "./home-proxy-webserver/site/:/var/www/html/"
