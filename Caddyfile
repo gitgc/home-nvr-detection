@@ -5,7 +5,7 @@
   acme_dns digitalocean {env.DO_AUTH_TOKEN}
 }
 
-{$CADDY_SUBDOMAIN}.{$CADDY_DOMAIN} {
+frigate.{$CADDY_DOMAIN} {
   encode gzip
 
   import auth
