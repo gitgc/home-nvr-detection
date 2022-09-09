@@ -19,7 +19,7 @@ services:
     ports:
       - 1935:1935
     environment:
-      - FRIGATE_DOMAIN=${CADDY_DOMAIN}
+      - FRIGATE_CAM_DOMAIN
       - FRIGATE_RTSP_USER
       - FRIGATE_RTSP_PASSWORD
     healthcheck:
@@ -47,6 +47,7 @@ services:
   mqtt:
     container_name: mqtt
     image: eclipse-mosquitto:1.6
+    init: true
     ports:
       - 1883:1883
     healthcheck:
@@ -73,6 +74,7 @@ services:
     image: ghcr.io/gitgc/home-proxy-webserver:main
     container_name: frigate-home-proxy
     restart: unless-stopped
+    init: true
     ports:
       - 80:80
       - 443:443
