@@ -23,7 +23,7 @@ cameras:
         - -hwaccel_output_format
         - yuv420p
       inputs:
-        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@workshop-yard-cam.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam-exterior.workshop.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
           roles: &defaultExteriorRoles
             - rtmp
             - record
@@ -66,7 +66,7 @@ cameras:
     ffmpeg:
       hwaccel_args: *defaultHardwareAccelArgs
       inputs:
-        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@garage-yard-cam.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam-exterior.garage.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
           roles: *defaultExteriorRoles
     rtmp: *defaultRTMPArgs
     detect: *defaultDetectArgs
@@ -82,7 +82,7 @@ cameras:
     ffmpeg:
       hwaccel_args: *defaultHardwareAccelArgs
       inputs:
-        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@front-door-cam.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.porch.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
           roles: *defaultExteriorRoles
     rtmp: *defaultRTMPArgs
     detect: *defaultDetectArgs
