@@ -21,9 +21,5 @@ nvr.{$CADDY_DOMAIN} {
 scrypted.{$CADDY_DOMAIN} {
   encode gzip
 
-  reverse_proxy https://host.docker.internal:10443 {
-    transport http {
-      tls_insecure_skip_verify
-    }
-  }
+  reverse_proxy http://host.docker.internal:11080
 }
