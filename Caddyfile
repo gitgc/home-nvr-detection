@@ -2,7 +2,7 @@
   acme_dns digitalocean {env.DO_AUTH_TOKEN}
 }
 
-nvr.{$CADDY_DOMAIN} {
+nvr-server.{$CADDY_DOMAIN} {
   encode gzip
 
   respond /caddy-health-check 200
@@ -16,10 +16,4 @@ nvr.{$CADDY_DOMAIN} {
   }
 
   reverse_proxy {$CADDY_PROXY_UPSTREAM}
-}
-
-scrypted.{$CADDY_DOMAIN} {
-  encode gzip
-
-  reverse_proxy http://host.docker.internal:11080
 }

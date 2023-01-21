@@ -11,7 +11,7 @@ services:
     container_name: frigate
     privileged: true
     restart: unless-stopped
-    image: ghcr.io/blakeblackshear/frigate:0.12.0-beta3
+    image: ghcr.io/blakeblackshear/frigate:0.12.0-beta5
     shm_size: "512mb"
     devices:
       - /dev/bus/usb:/dev/bus/usb
@@ -19,7 +19,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./config/config.yml:/config/config.yml:ro
-      - /media/nvr:/media/frigate
+      - /media/gcoia/storage/volumes/nvr:/media/frigate
       - type: tmpfs
         target: /tmp/cache
         tmpfs:
@@ -38,19 +38,6 @@ services:
 #      start_period: 60s
     depends_on:
       - mqtt
-
-  scrypted:
-    image: koush/scrypted
-    container_name: frigate-scrypted
-    restart: unless-stopped
-    network_mode: host
-    volumes:
-      - ./scrypted:/server/volume
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "10"
 
   mqtt:
     container_name: mqtt

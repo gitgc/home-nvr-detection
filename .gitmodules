@@ -1,3 +1,0 @@
-[submodule "home-proxy-webserver"]
-	path = home-proxy-webserver
-	url = git@github.com:gitgc/home-proxy-webserver.git
