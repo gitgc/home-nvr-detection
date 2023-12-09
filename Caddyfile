@@ -17,3 +17,15 @@ nvr-server.{$CADDY_DOMAIN} {
 
   reverse_proxy {$CADDY_PROXY_UPSTREAM}
 }
+
+scrypted-server.{$CADDY_DOMAIN} {
+  encode gzip
+
+  reverse_proxy https://host.docker.internal:10443 {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
+  
+  reverse_proxy {$CADDY_PROXY_UPSTREAM}
+}
