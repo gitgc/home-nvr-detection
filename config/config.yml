@@ -10,10 +10,11 @@ detectors:
     device: usb:1
 
 birdseye:
-  enabled: False
+  enabled: false
 
 cameras:
   workshop-yard:
+    enabled: true
     ffmpeg:
       hwaccel_args: &defaultHardwareAccelArgs
         - -hwaccel
@@ -23,13 +24,11 @@ cameras:
         - -hwaccel_output_format
         - yuv420p
       inputs:
-        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam-exterior.workshop.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+        - path: 
+            rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam-exterior.workshop.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
           roles: &defaultExteriorRoles
-            - rtmp
             - record
             - detect
-    rtmp: &defaultRTMPArgs
-      enabled: True
     detect: &defaultDetectArgs
       width: 1920
       height: 1080
@@ -40,37 +39,35 @@ cameras:
         - car
         - dog
       filters:
-        car:
-          mask:
-            - 1886,145,1787,64,1629,64,1605,213,1920,296
-            - 1337,93,1401,0,965,0,1133,57,1217,68,1276,86
+        car: {}
     record:
-      enabled: True
+      enabled: true
       retain: &defaultExteriorRetain
         mode: motion
-        days: 14
-      events:
-        required_zones:
-          - yard
+        days: 28
     snapshots: &defaultSnapshotArgs
-      timestamp: True
-      bounding_box: True
-      crop: True
-      enabled: True
+      timestamp: true
+      bounding_box: true
+      crop: true
+      enabled: true
     motion:
       mask:
         - 0,0,505,0,526,98,281,93,418,233,312,310,295,520,0,592
     zones:
       yard:
         coordinates: 1920,1080,0,1080,0,0,930,0,1679,0,1624,217,1920,298
+#    review:
+#      alerts:
+#        required_zones:
+#          - yard
 
   garage-yard:
     ffmpeg:
       hwaccel_args: *defaultHardwareAccelArgs
       inputs:
-        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam-exterior.garage.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+        - path: 
+            rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam-exterior.garage.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
           roles: *defaultExteriorRoles
-    rtmp: *defaultRTMPArgs
     detect: *defaultDetectArgs
     objects:
       track:
@@ -79,11 +76,10 @@ cameras:
       filters:
         car:
           mask:
-            - 1493,457,1304,384,1262,306,1328,197,1413,202,1726,218,1881,313,1844,521
-            - 1877,1080,1920,672,1311,479,931,369,803,315,467,343,518,357,121,358,200,836,551,1080
-            - 830,146,808,200,956,204,980,165
+            - 0.778,0.423,0.679,0.356,0.657,0.283,0.692,0.182,0.736,0.187,0.899,0.202,0.98,0.29,0.96,0.482
+            - 0.432,0.135,0.421,0.185,0.498,0.189,0.51,0.153
     record:
-      enabled: True
+      enabled: true
       retain: *defaultExteriorRetain
     snapshots: *defaultSnapshotArgs
 
@@ -91,36 +87,16 @@ cameras:
     ffmpeg:
       hwaccel_args: *defaultHardwareAccelArgs
       inputs:
-        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.garden.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+        - path: 
+            rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.garden.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
           roles: *defaultExteriorRoles
-    rtmp: *defaultRTMPArgs
     detect: *defaultDetectArgs
     objects:
       track:
         - person
         - dog
     record:
-      enabled: True
+      enabled: true
       retain: *defaultExteriorRetain
     snapshots: *defaultSnapshotArgs
-
-  front-door:
-    ffmpeg:
-      hwaccel_args: *defaultHardwareAccelArgs
-      inputs:
-        - path: rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.porch.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
-          roles: *defaultExteriorRoles
-    rtmp: *defaultRTMPArgs
-    detect: *defaultDetectArgs
-    objects:
-      track:
-        - person
-        - car
-      filters:
-        car:
-          mask:
-            - 805,406,1644,432,1533,892,1139,878,1139,1080,1541,1080,1920,1080,1920,428,1920,0,0,0,0,1080,1146,1080,1241,892,815,811
-    record:
-      enabled: True
-      retain: *defaultExteriorRetain
-    snapshots: *defaultSnapshotArgs
+version: 0.14
