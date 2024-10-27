@@ -1,3 +1,6 @@
 .DS_Store
 scrypted/plugins
 scrypted/scrypted.db
+config/
+media/
+!config/config.yml

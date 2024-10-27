@@ -1,8 +1,9 @@
 {
+  email {env.CADDY_DNS_EMAIL}
   acme_dns digitalocean {env.DO_AUTH_TOKEN}
 }
 
-nvr-server.{$CADDY_DOMAIN} {
+nvr.{$CADDY_DOMAIN} {
   encode gzip
 
   respond /caddy-health-check 200
@@ -15,17 +16,11 @@ nvr-server.{$CADDY_DOMAIN} {
     }
   }
 
-  reverse_proxy {$CADDY_PROXY_UPSTREAM}
+  reverse_proxy http://frigate:5000
 }
 
-scrypted-server.{$CADDY_DOMAIN} {
+scrypted.{$CADDY_DOMAIN} {
   encode gzip
 
-  reverse_proxy https://host.docker.internal:10443 {
-    transport http {
-      tls_insecure_skip_verify
-    }
-  }
-  
-  reverse_proxy {$CADDY_PROXY_UPSTREAM}
+  reverse_proxy http://host.docker.internal:11080
 }
