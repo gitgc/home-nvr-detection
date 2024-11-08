@@ -32,7 +32,7 @@ cameras:
     detect: &defaultDetectArgs
       width: 1920
       height: 1080
-      fps: 5
+      fps: 10
     objects:
       track:
         - person
@@ -44,7 +44,7 @@ cameras:
       enabled: true
       retain: &defaultExteriorRetain
         mode: motion
-        days: 28
+        days: 14
     snapshots: &defaultSnapshotArgs
       timestamp: true
       bounding_box: true
