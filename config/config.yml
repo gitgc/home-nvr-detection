@@ -1,3 +1,6 @@
+tls:
+  enabled: false
+
 mqtt:
   host: mqtt
 
