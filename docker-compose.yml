@@ -32,8 +32,8 @@ services:
       - FRIGATE_RTSP_PASSWORD
     depends_on:
       - mqtt
-#    logging:
-#      driver: none
+    logging:
+      driver: none
     extra_hosts:
       - "cam.garden.coia.io:192.168.3.179"
       - "cam-exterior.workshop.coia.io:192.168.3.9"
@@ -65,17 +65,10 @@ services:
     container_name: scrypted
     restart: unless-stopped
     network_mode: host
-#    environment:
-#      - SCRYPTED_DOCKER_AVAHI=true
     devices:
-#      - /dev/bus/usb:/dev/bus/usb
       - /dev/dri/renderD128:/dev/dri/renderD128
-#    security_opt:
-#      - apparmor:unconfined
     volumes:
       - ./scrypted:/server/volume
-#      - /var/run/dbus:/var/run/dbus
-#      - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
     logging:
       driver: none
 
@@ -98,27 +91,7 @@ services:
       - "./home-proxy-webserver/caddy_config/:/config/"
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    #healthcheck:
-    #  test: [ "CMD", "wget", "--spider", "https://nvr.${CADDY_DOMAIN}/caddy-health-check" ]
-    #  interval: 30s
-    #  timeout: 10s
-    #  retries: 5
-    #  start_period: 60s
     depends_on:
       - frigate
     logging:
       driver: none
-
-#  watchtower:
-#    container_name: watchtower
-#    image: containrrr/watchtower
-#    restart: unless-stopped
-#    environment:
-#      - WATCHTOWER_SCHEDULE
-#      - WATCHTOWER_CLEANUP=true
-#      - WATCHTOWER_ROLLING_RESTART=true
-#      - WATCHTOWER_INCLUDE_STOPPED=true
-#      - WATCHTOWER_REVIVE_STOPPED=true
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
-#      - /etc/localtime:/etc/localtime:ro
