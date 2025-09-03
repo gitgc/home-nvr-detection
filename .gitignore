@@ -4,4 +4,4 @@ scrypted/scrypted.db
 config/
 media/
 !config/config.yml
-/.env
+.env
