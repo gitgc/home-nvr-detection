@@ -12,6 +12,10 @@ Requirements
 Steps
 -----
 
+`cp .env.example .env`
+
+Edit the `.env` file to set your environment variables.
+
 `docker-compose up -d`
 
 This will deploy the required Frigate, MQTT and Caddy reverse proxy servers. Note, you must replace all the `"CHANGE_ME"` values to valid production ones in the `.env` file before deploying. The USB Coral TPU must be connected to system too.
