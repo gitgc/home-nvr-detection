@@ -102,4 +102,6 @@ cameras:
       enabled: true
       retain: *defaultExteriorRetain
     snapshots: *defaultSnapshotArgs
-version: 0.14
+version: 0.16-0
+detect:
+  enabled: true
