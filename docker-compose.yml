@@ -3,7 +3,7 @@ services:
     container_name: frigate
     privileged: true
     restart: unless-stopped
-    image: ghcr.io/blakeblackshear/frigate:stable
+    image: ghcr.io/blakeblackshear/frigate:0.16.0
     shm_size: "512mb"
     devices:
       - /dev/bus/usb:/dev/bus/usb
@@ -16,6 +16,10 @@ services:
         target: /tmp/cache
         tmpfs:
           size: 1000000000
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
 #    ports:
 #      - 8971:8971
 #      - 5000:5000
@@ -28,8 +32,8 @@ services:
       - FRIGATE_RTSP_PASSWORD
     depends_on:
       - mqtt
-    logging:
-      driver: none
+#    logging:
+#      driver: none
     extra_hosts:
       - "cam.garden.coia.io:192.168.3.179"
       - "cam-exterior.workshop.coia.io:192.168.3.9"
