@@ -4,10 +4,13 @@ tls:
 mqtt:
   host: mqtt
 
+detect:
+  enabled: true
+
 detectors:
-  coral1:
+  coral:
     type: edgetpu
-    device: usb:0
+    device: usb
   coral2:
     type: edgetpu
     device: usb:1
@@ -56,6 +59,9 @@ cameras:
     motion:
       mask:
         - 0,0,505,0,526,98,281,93,418,233,312,310,295,520,0,592
+      threshold: 38
+      contour_area: 22
+      improve_contrast: true
     zones:
       yard:
         coordinates: 1920,1080,0,1080,0,0,930,0,1679,0,1624,217,1920,298
@@ -102,4 +108,15 @@ cameras:
       enabled: true
       retain: *defaultExteriorRetain
     snapshots: *defaultSnapshotArgs
-version: 0.14
+version: 0.16-0
+semantic_search:
+  enabled: false
+  model_size: small
+face_recognition:
+  enabled: true
+  model_size: small
+lpr:
+  enabled: true
+classification:
+  bird:
+    enabled: false
