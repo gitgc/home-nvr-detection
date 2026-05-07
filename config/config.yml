@@ -18,6 +18,9 @@ detectors:
     type: edgetpu
     device: usb:1
 
+model:
+  path: plus://be9c11b486ba0e2b8ea13338d4cc66ee
+
 birdseye:
   enabled: true
   mode: continuous
@@ -30,13 +33,7 @@ cameras:
   workshop-yard:
     enabled: true
     ffmpeg:
-      hwaccel_args: &defaultHardwareAccelArgs
-        - -hwaccel
-        - vaapi
-        - -hwaccel_device
-        - /dev/dri/renderD128
-        - -hwaccel_output_format
-        - yuv420p
+      hwaccel_args: preset-intel-qsv-h264
       inputs:
         - path: 
             rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam-exterior.workshop.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
@@ -52,6 +49,10 @@ cameras:
         - face
         - person
         - car
+        - bear
+        - deer
+        - dog
+        - cat
       filters:
         car: {}
     record:
@@ -82,7 +83,7 @@ cameras:
 
   entrance:
     ffmpeg:
-      hwaccel_args: *defaultHardwareAccelArgs
+      hwaccel_args: preset-intel-qsv-h264
       inputs:
         - path: 
             rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.entrance.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
@@ -93,6 +94,8 @@ cameras:
         - face
         - person
         - package
+        - dog
+        - cat
       filters:
         car: {}
         person:
@@ -112,15 +115,18 @@ cameras:
       mask: 0.812,0.041,0.964,0.038,0.964,0.075,0.812,0.078
     zones:
       yard:
-        coordinates: 0.527,0.196,0.738,0.36,0.934,0.257,0.946,0.147,0.687,0.046
+        coordinates: 
+          0.465,0.158,0.474,0.198,0.61,0.271,0.573,0.388,0.723,0.494,0.721,0.401,0.934,0.233,0.946,0.123,0.687,0.022,0.449,0.034
         loitering_time: 0
+        inertia: 3
       porch:
         coordinates: 
-          0.437,0.006,0.476,0.388,0.852,0.63,0.997,0.739,0.999,0.996,0.005,0.999,0,0.006
+          0.437,0.006,0.492,0.357,0.867,0.593,0.997,0.739,0.999,0.996,0.005,0.999,0,0.006
         loitering_time: 0
+        inertia: 3
   garage-yard:
     ffmpeg:
-      hwaccel_args: *defaultHardwareAccelArgs
+      hwaccel_args: preset-intel-qsv-h264
       inputs:
         - path: 
             rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam-exterior.garage.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
@@ -131,6 +137,10 @@ cameras:
         - face
         - person
         - car
+        - bear
+        - deer
+        - dog
+        - cat
       filters:
         car:
           mask: 0.534,0,0.544,0.028,0.711,0.037,0.724,0.003
@@ -154,7 +164,7 @@ cameras:
         loitering_time: 0
   garden:
     ffmpeg:
-      hwaccel_args: *defaultHardwareAccelArgs
+      hwaccel_args: preset-intel-qsv-h264
       inputs:
         - path: 
             rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.garden.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
@@ -164,6 +174,10 @@ cameras:
       track:
         - face
         - person
+        - bear
+        - deer
+        - dog
+        - cat
       filters:
         person:
           mask: 

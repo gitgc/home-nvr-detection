@@ -11,6 +11,7 @@ services:
     restart: unless-stopped
     image: ghcr.io/blakeblackshear/frigate:stable
     shm_size: "512mb"
+    stop_grace_period: 30s
     devices:
       - /dev/bus/usb:/dev/bus/usb
       - /dev/dri/renderD128:/dev/dri/renderD128
@@ -26,14 +27,19 @@ services:
       nofile:
         soft: 65535
         hard: 65535
-#    ports:
-#      - 5000:5000
+    ports:
+      - 8971:8971 # authenticated API endpoint
+      - 8554:8554 # RTSP feeds
+      - 8555:8555/tcp # webRTC over tcp
+      - 8555:8555/udp # webRTC over udp
+#      - 5000:5000 # Web UI. Only needed if not using the home proxy.
     environment:
       - FRIGATE_CAM_DOMAIN
       - FRIGATE_RTSP_USER
       - FRIGATE_RTSP_PASSWORD
       - FRIGATE_MQTT_USER
       - FRIGATE_MQTT_PASSWORD
+      - PLUS_API_KEY
     depends_on:
       - mqtt
     logging:
@@ -45,7 +51,7 @@ services:
       - "cam.entrance.coia.io:192.168.3.87"
     healthcheck:
       <<: *health_check_defaults
-      test: [ "CMD", "wget", "--spider", "http://localhost:5000/" ]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/" ]
     labels:
       autoheal-app: true
 
