@@ -49,6 +49,7 @@ services:
       - "cam-exterior.workshop.coia.io:192.168.3.9"
       - "cam-exterior.garage.coia.io:192.168.3.7"
       - "cam.entrance.coia.io:192.168.3.87"
+      - "host.docker.internal:host-gateway"
     healthcheck:
       <<: *health_check_defaults
       test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/" ]
