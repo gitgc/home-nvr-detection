@@ -36,6 +36,8 @@ services:
       - FRIGATE_CAM_DOMAIN
       - FRIGATE_RTSP_USER
       - FRIGATE_RTSP_PASSWORD
+      - FRIGATE_MQTT_USER
+      - FRIGATE_MQTT_PASSWORD
     depends_on:
       - mqtt
     logging:
@@ -53,14 +55,22 @@ services:
 
   mqtt:
     container_name: mqtt
-    image: eclipse-mosquitto:1.6
+    image: eclipse-mosquitto:2
     restart: unless-stopped
     init: true
     ports:
       - 1883:1883
+    environment:
+      - FRIGATE_MQTT_USER
+      - FRIGATE_MQTT_PASSWORD
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/mosquitto.passwd:/mosquitto/mosquitto.passwd:ro
     healthcheck:
       <<: *health_check_defaults
-      test: [ "CMD", "timeout", "1", "mosquitto_sub", "-h", "localhost", "-p", "1883", "-t", "'topic'", "-E", "-i", "probe" ]
+      test: [ "CMD", "timeout", "1", "mosquitto_sub", "-h", "localhost", "-p", "1883", "-t", "'topic'", "-u", "${FRIGATE_MQTT_USER}", "-P", "${FRIGATE_MQTT_PASSWORD}", "-E", "-i", "probe" ]
     logging:
       driver: none
     labels:

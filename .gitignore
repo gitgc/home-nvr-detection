@@ -5,3 +5,5 @@ config/
 media/
 !config/config.yml
 .env
+mosquitto/mosquitto.passwd
+mosquitto/data
