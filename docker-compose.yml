@@ -27,11 +27,7 @@ services:
         soft: 65535
         hard: 65535
 #    ports:
-#      - 8971:8971
 #      - 5000:5000
-#      - 8554:8554
-#      - 8555:8555/tcp
-#      - 8555:8555/udp
     environment:
       - FRIGATE_CAM_DOMAIN
       - FRIGATE_RTSP_USER
