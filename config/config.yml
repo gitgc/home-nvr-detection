@@ -4,8 +4,8 @@ tls:
 mqtt:
   host: mqtt
   port: 1883
-  user: "{FRIGATE_MQTT_USER}"
-  password: "{FRIGATE_MQTT_PASSWORD}"
+  user: '{FRIGATE_MQTT_USER}'
+  password: '{FRIGATE_MQTT_PASSWORD}'
 
 detect:
   enabled: true
@@ -19,7 +19,12 @@ detectors:
     device: usb:1
 
 birdseye:
-  enabled: false
+  enabled: true
+  mode: continuous
+  width: 1920
+  height: 1080
+  layout:
+    max_cameras: 4
 
 cameras:
   workshop-yard:
@@ -202,14 +207,6 @@ classification:
   bird:
     enabled: false
   custom:
-    Gio's Tesla:
-      enabled: true
-      name: Gio's Tesla
-      threshold: 0.8
-      object_config:
-        objects:
-          - car
-        classification_type: sub_label
     Carrie's Truck:
       enabled: true
       name: Carrie's Truck
@@ -226,3 +223,29 @@ classification:
         objects:
           - car
         classification_type: sub_label
+    Gio's Tesla:
+      enabled: true
+      name: Gio's Tesla
+      threshold: 0.8
+      object_config:
+        objects:
+          - car
+        classification_type: sub_label
+    front parking space:
+      enabled: true
+      name: front parking space
+      threshold: 0.8
+      state_config:
+        cameras:
+          entrance:
+            crop:
+              - 0.553277036610733
+              - 0.0015189672264233846
+              - 0.8427326140870931
+              - 0.5161066605177304
+        motion: true
+camera_groups:
+  Birdseye:
+    order: 1
+    icon: LuBird
+    cameras: birdseye
