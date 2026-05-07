@@ -1,3 +1,9 @@
+x-health-check-defaults: &health_check_defaults
+  interval: 30s
+  timeout: 10s
+  retries: 5
+  start_period: 60s
+
 services:
   frigate:
     container_name: frigate
@@ -40,27 +46,25 @@ services:
       - "cam-exterior.garage.coia.io:192.168.3.7"
       - "cam.entrance.coia.io:192.168.3.87"
     healthcheck:
+      <<: *health_check_defaults
       test: [ "CMD", "wget", "--spider", "http://localhost:5000/" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
+    labels:
+      autoheal-app: true
 
   mqtt:
     container_name: mqtt
     image: eclipse-mosquitto:1.6
     restart: unless-stopped
     init: true
-#    ports:
-#      - 1883:1883
+    ports:
+      - 1883:1883
     healthcheck:
+      <<: *health_check_defaults
       test: [ "CMD", "timeout", "1", "mosquitto_sub", "-h", "localhost", "-p", "1883", "-t", "'topic'", "-E", "-i", "probe" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
     logging:
       driver: none
+    labels:
+      autoheal-app: true
 
   scrypted:
     image: ghcr.io/koush/scrypted
@@ -73,6 +77,11 @@ services:
       - ./scrypted:/server/volume
     logging:
       driver: none
+    healthcheck:
+      <<: *health_check_defaults
+      test: ["CMD", "curl", "-f", "-k", "-L", "http://127.0.0.1:11080/endpoint/@scrypted/core/public/#/"]
+    labels:
+      autoheal-app: true
 
   frigate-home-proxy:
     image: ghcr.io/gitgc/home-proxy-webserver:main
@@ -93,7 +102,23 @@ services:
       - "./home-proxy-webserver/caddy_config/:/config/"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "nvr.coia.io:192.168.1.86"
     depends_on:
       - frigate
     logging:
       driver: none
+    healthcheck:
+      <<: *health_check_defaults
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "https://nvr.coia.io/caddy-health-check" ]
+    labels:
+      autoheal-app: true
+
+  autoheal:
+    image: willfarrell/autoheal:latest
+    network_mode: none
+    restart: unless-stopped
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: autoheal-app
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
