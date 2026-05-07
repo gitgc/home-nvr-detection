@@ -48,8 +48,9 @@ cameras:
         car: {}
     record:
       enabled: true
-      retain: &defaultExteriorRetain
-        mode: motion
+      continuous:
+        days: 0
+      motion:
         days: 14
     snapshots: &defaultSnapshotArgs
       timestamp: true
@@ -70,6 +71,28 @@ cameras:
 #        required_zones:
 #          - yard
 
+  entrance:
+    ffmpeg:
+      hwaccel_args: *defaultHardwareAccelArgs
+      inputs:
+        - path: 
+            rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.entrance.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+          roles: *defaultExteriorRoles
+    detect: *defaultDetectArgs
+    objects:
+      track:
+        - person
+        - car
+      filters:
+        car: {}
+    record:
+      enabled: true
+      continuous:
+        days: 0
+      motion:
+        days: 14
+    snapshots: *defaultSnapshotArgs
+
   garage-yard:
     ffmpeg:
       hwaccel_args: *defaultHardwareAccelArgs
@@ -89,7 +112,10 @@ cameras:
             - 0.432,0.135,0.421,0.185,0.498,0.189,0.51,0.153
     record:
       enabled: true
-      retain: *defaultExteriorRetain
+      continuous:
+        days: 0
+      motion:
+        days: 14
     snapshots: *defaultSnapshotArgs
 
   garden:
@@ -106,9 +132,12 @@ cameras:
         - dog
     record:
       enabled: true
-      retain: *defaultExteriorRetain
+      continuous:
+        days: 0
+      motion:
+        days: 14
     snapshots: *defaultSnapshotArgs
-version: 0.16-0
+version: 0.17-0
 semantic_search:
   enabled: false
   model_size: small
