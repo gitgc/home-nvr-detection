@@ -1,3 +1,5 @@
+version: 0.17-0
+
 tls:
   enabled: false
 
@@ -7,9 +9,6 @@ mqtt:
   user: '{FRIGATE_MQTT_USER}'
   password: '{FRIGATE_MQTT_PASSWORD}'
 
-detect:
-  enabled: true
-
 detectors:
   coral:
     type: edgetpu
@@ -17,6 +16,28 @@ detectors:
   coral2:
     type: edgetpu
     device: usb:1
+
+record:
+  enabled: true
+  continuous:
+    days: 0
+  motion:
+    days: 14
+
+detect:
+  enabled: true
+  width: 1920
+  height: 1080
+  fps: 10
+
+snapshots:
+  timestamp: true
+  bounding_box: true
+  crop: true
+  enabled: true
+
+ffmpeg:
+  hwaccel_args: preset-intel-qsv-h264
 
 model:
   path: plus://be9c11b486ba0e2b8ea13338d4cc66ee
@@ -28,6 +49,39 @@ birdseye:
   height: 1080
   layout:
     max_cameras: 4
+
+objects:
+  track:
+      - face
+      - person
+  filters:
+    face:
+      min_score: 0.5
+      threshold: 0.6
+
+semantic_search:
+  enabled: false
+  model_size: small
+
+face_recognition:
+  enabled: true
+  model_size: large
+  min_area: 400
+
+lpr:
+  enabled: false
+  model_size: small
+
+classification:
+  bird:
+    enabled: false
+  custom: {}
+
+camera_groups:
+  Birdseye:
+    order: 1
+    icon: LuBird
+    cameras: birdseye
 
 go2rtc:
   streams:
@@ -48,28 +102,15 @@ go2rtc:
       - 192.168.1.86:8555
       - stun:8555
 
-objects:
-  track:
-    - person
-    - face
-  filters:
-    face:
-      min_score: 0.6
-
 cameras:
   workshop-yard:
     enabled: true
     ffmpeg:
-      hwaccel_args: preset-intel-qsv-h264
       inputs:
         - path: rtsp://127.0.0.1:8554/workshop-yard
           roles: &defaultExteriorRoles
             - record
             - detect
-    detect: &defaultDetectArgs
-      width: 1920
-      height: 1080
-      fps: 10
     objects:
       track:
         - face
@@ -82,17 +123,6 @@ cameras:
         - cat
       filters:
         car: {}
-    record:
-      enabled: true
-      continuous:
-        days: 0
-      motion:
-        days: 14
-    snapshots: &defaultSnapshotArgs
-      timestamp: true
-      bounding_box: true
-      crop: true
-      enabled: true
     motion:
       threshold: 45
       contour_area: 45
@@ -106,11 +136,9 @@ cameras:
 
   entrance:
     ffmpeg:
-      hwaccel_args: preset-intel-qsv-h264
       inputs:
         - path: rtsp://127.0.0.1:8554/entrance
           roles: *defaultExteriorRoles
-    detect: *defaultDetectArgs
     objects:
       track:
         - face
@@ -123,13 +151,6 @@ cameras:
         car: {}
         person:
           mask: 0.474,0.007,0.56,0.006,0.554,0.038,0.475,0.037
-    record:
-      enabled: true
-      continuous:
-        days: 0
-      motion:
-        days: 14
-    snapshots: *defaultSnapshotArgs
     motion:
       threshold: 40
       contour_area: 30
@@ -149,11 +170,9 @@ cameras:
 
   garage-yard:
     ffmpeg:
-      hwaccel_args: preset-intel-qsv-h264
       inputs:
         - path: rtsp://127.0.0.1:8554/garage-yard
           roles: *defaultExteriorRoles
-    detect: *defaultDetectArgs
     objects:
       track:
         - face
@@ -167,13 +186,6 @@ cameras:
       filters:
         car:
           mask: 0.534,0,0.544,0.028,0.711,0.037,0.724,0.003
-    record:
-      enabled: true
-      continuous:
-        days: 0
-      motion:
-        days: 14
-    snapshots: *defaultSnapshotArgs
     motion:
       threshold: 45
       contour_area: 45
@@ -187,11 +199,9 @@ cameras:
 
   garden:
     ffmpeg:
-      hwaccel_args: preset-intel-qsv-h264
       inputs:
         - path: rtsp://127.0.0.1:8554/garden
           roles: *defaultExteriorRoles
-    detect: *defaultDetectArgs
     objects:
       track:
         - face
@@ -205,13 +215,6 @@ cameras:
         person:
           mask: 
             0.2,0.167,0.223,0.162,0.226,0.246,0.228,0.288,0.203,0.289,0.199,0.242,0.196,0.193
-    record:
-      enabled: true
-      continuous:
-        days: 0
-      motion:
-        days: 14
-    snapshots: *defaultSnapshotArgs
     motion:
       mask:
         - 0.857,0.644,0.762,0.404,0.708,0.316,0.608,0.293,0.553,0.299,0.493,0.416,0.47,0.536,0.455,0.628,0.119,1,0.72,1
@@ -230,28 +233,3 @@ cameras:
         coordinates: 
           0.002,0.996,0.121,0.999,1,1,0.998,0.155,0.336,0.059,0.002,0.161
         loitering_time: 0
-
-version: 0.17-0
-
-semantic_search:
-  enabled: false
-  model_size: small
-
-face_recognition:
-  enabled: true
-  model_size: large
-  min_area: 400
-
-lpr:
-  enabled: false
-  model_size: small
-
-classification:
-  bird:
-    enabled: false
-  custom: {}
-camera_groups:
-  Birdseye:
-    order: 1
-    icon: LuBird
-    cameras: birdseye
