@@ -1,26 +1,26 @@
 {
-  email {env.CADDY_DNS_EMAIL}
-  acme_dns digitalocean {env.DO_AUTH_TOKEN}
+	email {env.CADDY_DNS_EMAIL}
+	acme_dns digitalocean {env.DO_AUTH_TOKEN}
 }
 
 nvr.{$CADDY_DOMAIN} {
-  encode gzip
+	encode gzip
 
-  respond /caddy-health-check 200
+	respond /caddy-health-check 200
 
-  rewrite /cockpit /cockpit/
+	rewrite /cockpit /cockpit/
 
-  reverse_proxy /cockpit/* https://host.docker.internal:9090 {
-    transport http {
-      tls_insecure_skip_verify
-    }
-  }
+	reverse_proxy /cockpit/* https://host.docker.internal:9090 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
 
-  reverse_proxy http://frigate:5000
+	reverse_proxy http://frigate:5000
 }
 
 scrypted.{$CADDY_DOMAIN} {
-  encode gzip
+	encode gzip
 
-  reverse_proxy http://host.docker.internal:11080
+	reverse_proxy http://host.docker.internal:11080
 }
