@@ -1,12 +1,27 @@
 {
     "cSpell.words": [
         "authbasic",
+        "autoheal",
+        "blakeblackshear",
+        "Caddyfile",
+        "coia",
         "edgetpu",
+        "gitgc",
+        "healthcheck",
         "hwaccel",
+        "koush",
+        "localtime",
+        "Mosquitto",
         "mqtt",
+        "nofile",
         "realmonitor",
         "RTMP",
         "RTSP",
-        "vaapi"
+        "scrypted",
+        "tmpfs",
+        "ulimits",
+        "vaapi",
+        "webrtc",
+        "willfarrell"
     ]
 }
