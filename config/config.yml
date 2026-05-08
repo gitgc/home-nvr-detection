@@ -4,6 +4,7 @@ tls:
   enabled: false
 
 mqtt:
+  enabled: true
   host: mqtt
   port: 1883
   user: '{FRIGATE_MQTT_USER}'
@@ -17,24 +18,28 @@ detectors:
     type: edgetpu
     device: usb:1
 
-record:
-  enabled: true
-  continuous:
-    days: 0
-  motion:
-    days: 14
-
 detect:
   enabled: true
   width: 1920
   height: 1080
   fps: 10
 
+record:
+  enabled: true
+  alerts:
+    retain:
+      days: 14
+  detections:
+    retain:
+      days: 14
+
 snapshots:
   timestamp: true
   bounding_box: true
   crop: true
   enabled: true
+  retain:
+    default: 14
 
 ffmpeg:
   hwaccel_args: preset-intel-qsv-h264
@@ -84,6 +89,9 @@ camera_groups:
     cameras: birdseye
 
 go2rtc:
+  rtsp:
+    username: "{FRIGATE_RTSP_USER}"
+    password: "{FRIGATE_RTSP_PASSWORD}"
   streams:
     workshop-yard:
       #- rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam-exterior.workshop.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
