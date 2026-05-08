@@ -48,6 +48,14 @@ go2rtc:
       - 192.168.1.86:8555
       - stun:8555
 
+objects:
+  track:
+    - person
+    - face
+  filters:
+    face:
+      min_score: 0.6
+
 cameras:
   workshop-yard:
     enabled: true
@@ -231,7 +239,8 @@ semantic_search:
 
 face_recognition:
   enabled: true
-  model_size: small
+  model_size: large
+  min_area: 400
 
 lpr:
   enabled: false
@@ -240,45 +249,7 @@ lpr:
 classification:
   bird:
     enabled: false
-  custom:
-    Carrie's Truck:
-      enabled: true
-      name: Carrie's Truck
-      threshold: 0.8
-      object_config:
-        objects:
-          - car
-        classification_type: sub_label
-    Gio's Miata:
-      enabled: true
-      name: Gio's Miata
-      threshold: 0.8
-      object_config:
-        objects:
-          - car
-        classification_type: sub_label
-    Gio's Tesla:
-      enabled: true
-      name: Gio's Tesla
-      threshold: 0.8
-      object_config:
-        objects:
-          - car
-        classification_type: sub_label
-    front parking space:
-      enabled: true
-      name: front parking space
-      threshold: 0.8
-      state_config:
-        cameras:
-          entrance:
-            crop:
-              - 0.553277036610733
-              - 0.0015189672264233846
-              - 0.8427326140870931
-              - 0.5161066605177304
-        motion: true
-
+  custom: {}
 camera_groups:
   Birdseye:
     order: 1
