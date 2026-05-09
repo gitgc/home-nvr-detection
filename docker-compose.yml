@@ -10,7 +10,7 @@ services:
     privileged: true
     restart: unless-stopped
     image: ghcr.io/blakeblackshear/frigate:stable
-    shm_size: "512mb"
+    shm_size: "1g"
     stop_grace_period: 30s
     devices:
       - /dev/bus/usb:/dev/bus/usb
