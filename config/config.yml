@@ -54,7 +54,7 @@ model:
   path: plus://be9c11b486ba0e2b8ea13338d4cc66ee
 
 birdseye:
-  enabled: true
+  enabled: false
   mode: continuous
   width: 1920
   height: 1080
@@ -63,8 +63,8 @@ birdseye:
 
 objects:
   track:
-      - face
-      - person
+    - face
+    - person
   filters:
     face:
       min_score: 0.5
@@ -88,12 +88,7 @@ classification:
     enabled: false
   custom: {}
 
-camera_groups:
-  Birdseye:
-    order: 1
-    icon: LuBird
-    cameras: birdseye
-
+camera_groups: {}
 go2rtc:
   #rtsp:
   #  username: "{FRIGATE_RTSP_USER}"
@@ -122,7 +117,7 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/workshop-yard
-          roles: &defaultExteriorRoles
+          roles:
             - record
             - detect
     objects:
@@ -138,7 +133,7 @@ cameras:
       filters:
         car: {}
     motion:
-      threshold: 45
+      threshold: 40
       contour_area: 45
       improve_contrast: true
       mask:
@@ -159,7 +154,9 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/entrance
-          roles: *defaultExteriorRoles
+          roles:
+            - record
+            - detect
     objects:
       track:
         - face
@@ -196,7 +193,9 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/garage-yard
-          roles: *defaultExteriorRoles
+          roles:
+            - record
+            - detect
     objects:
       track:
         - face
@@ -211,7 +210,7 @@ cameras:
         car:
           mask: 0.534,0,0.544,0.028,0.711,0.037,0.724,0.003
     motion:
-      threshold: 45
+      threshold: 40
       contour_area: 45
       improve_contrast: true
       mask: 0.754,0.046,0.965,0.041,0.965,0.078,0.754,0.078
@@ -225,7 +224,9 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/garden
-          roles: *defaultExteriorRoles
+          roles:
+            - record
+            - detect
     objects:
       track:
         - face
@@ -243,7 +244,7 @@ cameras:
       mask:
         - 0.857,0.644,0.762,0.404,0.708,0.316,0.608,0.293,0.553,0.299,0.493,0.416,0.47,0.536,0.455,0.628,0.119,1,0.72,1
         - 0,0,0,0.161,0.128,0.13,0.218,0.1,0.272,0.094,0.314,0.083,0.333,0.059,0.492,0.044,0.586,0.062,0.736,0.099,0.884,0.14,1,0.152,1,0,0.722,0,0.36,0
-      threshold: 45
+      threshold: 40
       contour_area: 45
       improve_contrast: true
     zones:
