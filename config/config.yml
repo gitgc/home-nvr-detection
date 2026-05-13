@@ -82,6 +82,10 @@ face_recognition:
 lpr:
   enabled: true
   model_size: small
+  debug_save_plates: false
+  enhancement: 1
+  recognition_threshold: 0.75
+  min_area: 1000
 
 classification:
   bird:
@@ -184,6 +188,8 @@ cameras:
         - cat
       filters:
         car: {}
+        cat:
+          mask: 0.74,0.261,0.786,0.286,0.767,0.332,0.73,0.32,0.73,0.259
     motion:
       threshold: 40
       contour_area: 45
@@ -249,7 +255,10 @@ cameras:
         - dog
         - cat
       filters:
-        car: {}
+        car:
+          mask: 0.003,0.005,0,0.319,0.705,0.303,0.707,0
+        license_plate:
+          mask: 0.128,0,0.132,0.761,0.712,0.744,0.715,0,1,0,1,1,0,1,0,0
     motion:
       threshold: 50
       contour_area: 50
