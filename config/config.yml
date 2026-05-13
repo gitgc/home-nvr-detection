@@ -25,6 +25,7 @@ detect:
   fps: 10
 
 record:
+  sync_recordings: false
   enabled: true
   continuous:
     days: 0

@@ -16,7 +16,7 @@ nvr.{$CADDY_DOMAIN} {
 		}
 	}
 
-	reverse_proxy http://frigate:5000
+	reverse_proxy http://frigate:8971
 }
 
 scrypted.{$CADDY_DOMAIN} {

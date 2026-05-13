@@ -28,11 +28,11 @@ services:
         soft: 65535
         hard: 65535
     ports:
-      - 8971:8971 # authenticated API endpoint
+#      - 8971:8971 # authenticated endpoint, proxied by frigate
       - 8554:8554 # RTSP feeds
       - 8555:8555/tcp # webRTC over tcp
       - 8555:8555/udp # webRTC over udp
-#      - 5000:5000 # Web UI. Only needed if not using the home proxy.
+#      - 5000:5000 # Web UI, no auth!
     environment:
       - FRIGATE_CAM_DOMAIN
       - FRIGATE_RTSP_USER
