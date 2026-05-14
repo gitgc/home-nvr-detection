@@ -119,8 +119,8 @@ services:
       - "nvr.coia.io:192.168.1.86"
     depends_on:
       - frigate
-    #logging:
-      #driver: none
+    logging:
+      driver: none
     healthcheck:
       <<: *health_check_defaults
       test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "https://nvr.coia.io/caddy-health-check" ]
