@@ -103,7 +103,8 @@ services:
     init: true
     ports:
       - 80:80
-      - 443:443
+      - 443:443/tcp
+      - 443:443/udp
     environment:
       - CADDY_DNS_EMAIL
       - CADDY_DOMAIN
