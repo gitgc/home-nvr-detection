@@ -1,6 +1,6 @@
 {
 	email {env.CADDY_DNS_EMAIL}
-	acme_dns digitalocean {env.DO_AUTH_TOKEN}
+	acme_dns cloudflare {env.CF_AUTH_TOKEN}
 }
 
 nvr.{$CADDY_DOMAIN} {
