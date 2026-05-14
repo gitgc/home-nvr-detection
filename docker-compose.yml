@@ -107,7 +107,6 @@ services:
     environment:
       - CADDY_DNS_EMAIL
       - CADDY_DOMAIN
-      - DO_AUTH_TOKEN
       - CF_AUTH_TOKEN
     volumes:
       - "./Caddyfile:/etc/caddy/Caddyfile:ro"
