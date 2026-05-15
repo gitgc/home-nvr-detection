@@ -34,6 +34,7 @@ services:
       - 8555:8555/udp # webRTC over udp
 #      - 5000:5000 # Web UI, no auth!
     environment:
+      - TZ=America/Los_Angeles
       - FRIGATE_CAM_DOMAIN
       - FRIGATE_RTSP_USER
       - FRIGATE_RTSP_PASSWORD
