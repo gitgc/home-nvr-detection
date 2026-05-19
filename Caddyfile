@@ -16,3 +16,9 @@ scrypted.{$CADDY_DOMAIN} {
 
 	reverse_proxy http://host.docker.internal:11080
 }
+
+netdata.nvr.{$CADDY_DOMAIN} {
+	encode gzip
+
+	reverse_proxy host.docker.internal:19999
+}

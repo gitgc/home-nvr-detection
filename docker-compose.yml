@@ -4,6 +4,12 @@ x-health-check-defaults: &health_check_defaults
   retries: 5
   start_period: 60s
 
+x-default-logging: &default_logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   frigate:
     container_name: frigate
@@ -44,7 +50,7 @@ services:
     depends_on:
       - mqtt
     logging:
-      driver: none
+      <<: *default_logging
     extra_hosts:
       - "cam.garden.coia.io:192.168.3.179"
       - "cam-exterior.workshop.coia.io:192.168.3.9"
@@ -76,7 +82,7 @@ services:
       <<: *health_check_defaults
       test: [ "CMD", "timeout", "1", "mosquitto_sub", "-h", "localhost", "-p", "1883", "-t", "'topic'", "-u", "${FRIGATE_MQTT_USER}", "-P", "${FRIGATE_MQTT_PASSWORD}", "-E", "-i", "probe" ]
     logging:
-      driver: none
+      <<: *default_logging
     labels:
       autoheal-app: true
 
@@ -90,7 +96,7 @@ services:
     volumes:
       - ./scrypted:/server/volume
     logging:
-      driver: none
+      <<: *default_logging
     healthcheck:
       <<: *health_check_defaults
       test: ["CMD", "curl", "-f", "-k", "-L", "http://127.0.0.1:11080/endpoint/@scrypted/core/public/#/"]
@@ -121,10 +127,48 @@ services:
     depends_on:
       - frigate
     logging:
-      driver: none
+      <<: *default_logging
     healthcheck:
       <<: *health_check_defaults
       test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "https://nvr.coia.io/caddy-health-check" ]
+    labels:
+      autoheal-app: true
+
+  netdata:
+    image: netdata/netdata
+    container_name: netdata
+    pid: host
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - NETDATA_CLAIM_TOKEN
+      - NETDATA_CLAIM_URL
+      - NETDATA_CLAIM_ROOMS
+      - DISABLE_TELEMETRY=1
+    cap_add:
+      - SYS_PTRACE
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - ./netdata/config:/etc/netdata
+      - ./netdata/lib:/var/lib/netdata
+      - /:/host/root:ro,rslave
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - /var/log:/host/var/log:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    tmpfs:
+      - /var/cache/netdata:size=512m
+    logging:
+      <<: *default_logging
+    healthcheck:
+      <<: *health_check_defaults
+      test: [ "CMD", "curl", "-f", "http://localhost:19999/api/v1/info" ]
     labels:
       autoheal-app: true
 
@@ -134,6 +178,8 @@ services:
     restart: unless-stopped
     environment:
       AUTOHEAL_CONTAINER_LABEL: autoheal-app
+    logging:
+      <<: *default_logging
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
