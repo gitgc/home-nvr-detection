@@ -8,14 +8,6 @@ nvr.{$CADDY_DOMAIN} {
 
 	respond /caddy-health-check 200
 
-	rewrite /cockpit /cockpit/
-
-	reverse_proxy /cockpit/* https://host.docker.internal:9090 {
-		transport http {
-			tls_insecure_skip_verify
-		}
-	}
-
 	reverse_proxy http://frigate:8971
 }
 
