@@ -48,7 +48,8 @@ services:
       - FRIGATE_MQTT_PASSWORD
       - PLUS_API_KEY
     depends_on:
-      - mqtt
+      mqtt:
+        condition: service_healthy
     logging:
       <<: *default_logging
     extra_hosts:
@@ -125,7 +126,8 @@ services:
       - "host.docker.internal:host-gateway"
       - "nvr.coia.io:192.168.1.86"
     depends_on:
-      - frigate
+      frigate:
+        condition: service_healthy
     logging:
       <<: *default_logging
     healthcheck:
