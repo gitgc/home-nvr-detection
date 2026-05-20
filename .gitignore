@@ -7,3 +7,5 @@ media/
 .env
 mosquitto/mosquitto.passwd
 mosquitto/data
+netdata/
+
