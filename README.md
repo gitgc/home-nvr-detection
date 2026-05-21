@@ -2,6 +2,45 @@
 
 This project contains the software configuration for my home NVR/ML/TPU accelerated object detection system. Largely built on [Frigate](https://frigate.video/).
 
+## Architecture
+
+```mermaid
+graph TB
+    subgraph Cameras["IP Cameras"]
+        C1[entrance]
+        C2[workshop-yard]
+        C3[garage-yard]
+        C4[drive]
+        C5[garden]
+    end
+
+    subgraph Stack["Docker Compose Stack"]
+        Scrypted["Scrypted<br>RTSP Proxy / Transcoder"]
+        Frigate["Frigate NVR<br>go2rtc · Object Detection<br>Face Recognition · LPR"]
+        MQTT["Eclipse Mosquitto<br>MQTT Broker"]
+        Caddy["Caddy<br>Reverse Proxy + TLS"]
+    end
+
+    subgraph Client["Client"]
+        User(["Browser / Mobile App"])
+    end
+
+    TPU["Coral Edge TPU × 2<br>USB Accelerator"]
+    GPU["Intel GPU<br>QSV H.264 Decode"]
+    Disk[("NVR Storage<br>/nvr-media/frigate")]
+
+    C1 & C2 & C3 & C4 & C5 -->|RTSP| Scrypted
+    Scrypted -->|"RTSP restream<br>host.docker.internal"| Frigate
+    Frigate <-->|events| MQTT
+    TPU & GPU --> Frigate
+    Frigate --> Disk
+
+    User -->|"HTTPS :443"| Caddy
+    Caddy -->|"nvr.*"| Frigate
+    Caddy -->|"scrypted.*"| Scrypted
+
+```
+
 ## Requirements
 
 * Docker
