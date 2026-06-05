@@ -24,6 +24,13 @@ detect:
   height: 1080
   fps: 10
 
+audio:
+  listen:
+    - bark
+    - fire_alarm
+    - speech
+    - yell
+
 record:
   sync_recordings: false
   enabled: true
@@ -84,7 +91,7 @@ lpr:
   enabled: true
   model_size: small
   debug_save_plates: true
-  enhancement: 3
+  enhancement: 6
   recognition_threshold: 0.80
   min_area: 1000
   match_distance: 1
@@ -119,9 +126,9 @@ classification:
 camera_groups: {}
 
 go2rtc:
-  rtsp:
-    username: '{FRIGATE_RTSP_USER}'
-    password: '{FRIGATE_RTSP_PASSWORD}'
+#  rtsp:
+#    username: '{FRIGATE_RTSP_USER}'
+#    password: '{FRIGATE_RTSP_PASSWORD}'
   streams:
     workshop-yard:
       #- rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam-exterior.workshop.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
@@ -162,6 +169,9 @@ cameras:
           roles:
             - record
             - detect
+            - audio
+    audio:
+      enabled: true
     objects:
       track:
         - face
@@ -277,6 +287,9 @@ cameras:
           roles:
             - record
             - detect
+            - audio
+    audio:
+      enabled: true
     objects:
       track:
         - face
