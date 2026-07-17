@@ -57,6 +57,7 @@ services:
       - "cam-exterior.workshop.coia.io:192.168.3.9"
       - "cam-exterior.garage.coia.io:192.168.3.7"
       - "cam.entrance.coia.io:192.168.3.87"
+      - "cam.roaming.coia.io:192.168.1.156"
       - "host.docker.internal:host-gateway"
     healthcheck:
       <<: *health_check_defaults
