@@ -59,7 +59,7 @@ ffmpeg:
   hwaccel_args: preset-intel-qsv-h264
 
 model:
-  path: plus://dc1f47ebcf41252dc9a935cbf8bb2916
+  path: plus://878845d845501df76ab45814ae6e9d3d
 
 birdseye:
   enabled: false
@@ -123,6 +123,14 @@ classification:
           - car
         classification_type: sub_label
 
+    chicken:
+      enabled: true
+      name: chicken
+      threshold: 0.8
+      object_config:
+        objects:
+          - bird
+        classification_type: sub_label
 camera_groups: {}
 
 go2rtc:
@@ -398,7 +406,38 @@ cameras:
         - fox
         - squirrel
         - rabbit
+      filters:
+        bear:
+          min_score: 75
+          threshold: 0.75
+        deer:
+          min_score: 75
+          threshold: 0.75
+        dog:
+          min_score: 75
+          threshold: 0.75
+        cat:
+          min_score: 75
+          threshold: 0.75
+        bird:
+          min_score: 0.45
+          threshold: 0.5
+        raccoon:
+          min_score: 75
+          threshold: 0.75
+        fox:
+          min_score: 75
+          threshold: 0.75
+        squirrel:
+          min_score: 75
+          threshold: 0.75
+        rabbit:
+          min_score: 75
+          threshold: 0.75
+      mask: 0,0.363,0,0,0.416,0,1,0,1,0.268,0.427,0.287,0.071,0.334,0.024,0.374
     motion:
-      threshold: 40
-      contour_area: 45
+      threshold: 30
+      contour_area: 15
       improve_contrast: true
+      mask: 
+        0,0,0,0.402,0.228,0.532,0.434,0.452,0.594,0.445,0.809,0.482,1,0.468,1,0.412,1,0.293,1,0.238,1,0,0.034,0

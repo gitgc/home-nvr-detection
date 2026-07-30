@@ -15,7 +15,7 @@ services:
     container_name: frigate
     privileged: true
     restart: unless-stopped
-    image: ghcr.io/blakeblackshear/frigate:stable
+    image: ghcr.io/blakeblackshear/frigate:0.17.2
     shm_size: "1g"
     stop_grace_period: 30s
     devices:
