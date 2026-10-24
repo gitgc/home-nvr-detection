@@ -219,6 +219,20 @@ cameras:
               friendly_name: Object Mask 1 (person)
               enabled: true
               coordinates: 0.474,0.007,0.56,0.006,0.554,0.038,0.475,0.037
+      genai:
+        use_snapshot: false
+        objects:
+          - bear
+          - car
+          - cat
+          - deer
+          - dog
+          - face
+          - package
+          - person
+          - ups
+          - usps
+          - amazon
     motion:
       threshold: 40
       contour_area: 30
@@ -272,6 +286,22 @@ cameras:
               enabled: true
               coordinates: 
                 0.74,0.261,0.786,0.286,0.767,0.332,0.73,0.32,0.73,0.259
+      genai:
+        enabled: false
+        use_snapshot: false
+        objects:
+          - bear
+          - amazon
+          - cat
+          - deer
+          - dog
+          - face
+          - license_plate
+          - package
+          - person
+          - ups
+          - usps
+          - car
     motion:
       threshold: 40
       contour_area: 45
@@ -320,6 +350,15 @@ cameras:
               friendly_name: Object Mask 1 (car)
               enabled: true
               coordinates: 0.534,0,0.544,0.028,0.711,0.037,0.724,0.003
+      genai:
+        enabled: true
+        use_snapshot: false
+        objects:
+          - bear
+          - cat
+          - deer
+          - dog
+          - person
     motion:
       threshold: 40
       contour_area: 45
@@ -389,6 +428,17 @@ cameras:
               enabled: true
               coordinates: 
                 0,0,1,0,1,0.366,0.726,0.347,0.687,0.097,0.108,0.132,0,0.418,0,1
+      genai:
+        use_snapshot: false
+        objects:
+          - bear
+          - cat
+          - deer
+          - dog
+          - person
+          - ups
+          - usps
+          - car
     motion:
       threshold: 50
       contour_area: 50
@@ -442,9 +492,9 @@ cameras:
           - bear
           - deer
           - dog
-          - face
-          - person
           - cat
+          - person
+        use_snapshot: false
     motion:
       mask:
         motion_mask_1:
@@ -580,4 +630,4 @@ genai:
     roles:
       - descriptions
       - chat
-    model: models/gemini-3.8-flash
+    model: models/gemini-3.1-flash-lite

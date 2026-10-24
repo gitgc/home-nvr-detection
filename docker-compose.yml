@@ -23,7 +23,11 @@ services:
       - /dev/dri/renderD128:/dev/dri/renderD128
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /nvr-media/frigate:/media/frigate
+      - type: bind
+        source: /nvr-media/frigate
+        target: /media/frigate
+        bind:
+          create_host_path: false
       - ./config:/config
       - type: tmpfs
         target: /tmp/cache

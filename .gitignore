@@ -1,6 +1,7 @@
 .DS_Store
 scrypted/plugins
 scrypted/scrypted.db
+config/
 !config/config.yml
 media/
 .env
