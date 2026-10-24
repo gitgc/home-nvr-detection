@@ -61,7 +61,7 @@ ffmpeg:
   hwaccel_args: preset-intel-qsv-h264
 
 model:
-  path: ${PLUS_MODEL_PATH}
+  path: plus://878845d845501df76ab45814ae6e9d3d
 
 birdseye:
   enabled: false
