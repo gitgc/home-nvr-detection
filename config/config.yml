@@ -61,7 +61,7 @@ ffmpeg:
   hwaccel_args: preset-intel-qsv-h264
 
 model:
-  path: plus://878845d845501df76ab45814ae6e9d3d
+  path: plus://375ee9ab6f6b44368f803886242bc166
 
 birdseye:
   enabled: false
@@ -244,12 +244,12 @@ cameras:
           coordinates: 0.812,0.041,0.964,0.038,0.964,0.075,0.812,0.078
     zones:
       yard:
-        coordinates: 
+        coordinates:
           0.465,0.158,0.474,0.198,0.61,0.271,0.573,0.388,0.723,0.494,0.721,0.401,0.934,0.233,0.946,0.123,0.687,0.022,0.449,0.034
         loitering_time: 0
         inertia: 3
       porch:
-        coordinates: 
+        coordinates:
           0.437,0.006,0.492,0.357,0.867,0.593,0.997,0.739,0.999,0.996,0.005,0.999,0,0.006
         loitering_time: 0
         inertia: 3
@@ -284,7 +284,7 @@ cameras:
             object_mask_1:
               friendly_name: Object Mask 1 (cat)
               enabled: true
-              coordinates: 
+              coordinates:
                 0.74,0.261,0.786,0.286,0.767,0.332,0.73,0.32,0.73,0.259
       genai:
         enabled: false
@@ -315,11 +315,11 @@ cameras:
         motion_mask_2:
           friendly_name: Motion Mask 2
           enabled: true
-          coordinates: 
+          coordinates:
             0.643,0.757,0.551,0.656,0.439,0.609,0.328,0.575,0.199,0.596,0.163,0.6,0,0.706,0,1,0.524,1
     zones:
       yard:
-        coordinates: 
+        coordinates:
           0.653,0.745,0.556,0.642,0.333,0.558,0.164,0.579,0.002,0.683,0,0.039,0,0,0.217,0.002,0.904,0,0.791,0.393,0.819,0.415,0.766,0.559,0.694,0.686
         loitering_time: 0
 
@@ -370,7 +370,7 @@ cameras:
           coordinates: 0.754,0.046,0.965,0.041,0.965,0.078,0.754,0.078
     zones:
       yard:
-        coordinates: 
+        coordinates:
           0,0.146,0.075,0.024,0.513,0.007,0.735,0.019,0.748,0.094,0.838,0.114,0.611,0.973,0.245,0.96,0.152,0.687,0,0.538
         loitering_time: 0
 
@@ -419,14 +419,14 @@ cameras:
             object_mask_1:
               friendly_name: Object Mask 1 (car)
               enabled: true
-              coordinates: 
+              coordinates:
                 0,0,0,0.374,0.086,0.378,0.143,0.31,0.439,0.313,0.522,0.142,0.74,0.374,1,0.368,1,0,0.448,0,0.329,0
         license_plate:
           mask:
             object_mask_1:
               friendly_name: Object Mask 1 (license_plate)
               enabled: true
-              coordinates: 
+              coordinates:
                 0,0,1,0,1,0.366,0.726,0.347,0.687,0.097,0.108,0.132,0,0.418,0,1
       genai:
         use_snapshot: false
@@ -447,17 +447,17 @@ cameras:
         motion_mask_1:
           friendly_name: Motion Mask 1
           enabled: true
-          coordinates: 
+          coordinates:
             0.112,0.289,0.106,0.51,0.157,0.46,0.158,0.362,0.462,0.364,0.476,0.367,0.561,0.482,0.637,0.52,0.684,0.503,0.696,0.3,0.753,0.24,0.928,0.266,1,0.295,1,0.15,1,0,0,0,0,0.296
     zones:
       driveway:
-        coordinates: 
+        coordinates:
           0.169,0.37,0.45,0.37,0.612,0.545,0.676,0.572,0.765,0.586,0.621,0.644,0.46,0.708,0.265,0.693,0.154,0.681,0.107,0.588,0.161,0.56,0.168,0.464,0.172,0.423
         loitering_time: 0
 
         inertia: 3
       yard:
-        coordinates: 
+        coordinates:
           0.101,0.596,0.003,0.595,0.001,0.997,0.999,0.995,0.999,0.395,0.928,0.402,0.781,0.305,0.783,0.38,0.777,0.571,0.772,0.598,0.459,0.712,0.154,0.684
         loitering_time: 0
 
@@ -485,7 +485,7 @@ cameras:
             object_mask_1:
               friendly_name: Object Mask 1 (person)
               enabled: true
-              coordinates: 
+              coordinates:
                 0.2,0.167,0.223,0.162,0.226,0.246,0.228,0.288,0.203,0.289,0.199,0.242,0.196,0.193
       genai:
         objects:
@@ -500,12 +500,12 @@ cameras:
         motion_mask_1:
           friendly_name: Motion Mask 1
           enabled: true
-          coordinates: 
+          coordinates:
             0.857,0.644,0.762,0.404,0.708,0.316,0.608,0.293,0.553,0.299,0.493,0.416,0.47,0.536,0.455,0.628,0.119,1,0.72,1
         motion_mask_2:
           friendly_name: Motion Mask 2
           enabled: true
-          coordinates: 
+          coordinates:
             0,0,0,0.161,0.128,0.13,0.218,0.1,0.272,0.094,0.314,0.083,0.333,0.059,0.492,0.044,0.586,0.062,0.736,0.099,0.884,0.14,1,0.152,1,0,0.722,0,0.36,0
       threshold: 40
       contour_area: 45
@@ -518,7 +518,7 @@ cameras:
         coordinates: 0.404,0.357,0,0.58,0.001,0.258,0.212,0.168
         loitering_time: 0
       back-yard:
-        coordinates: 
+        coordinates:
           0.002,0.996,0.121,0.999,1,1,0.998,0.155,0.336,0.059,0.002,0.161
         loitering_time: 0
 
@@ -575,7 +575,7 @@ cameras:
         object_mask_1:
           friendly_name: Object Mask 1
           enabled: true
-          coordinates: 
+          coordinates:
             0,0.363,0,0,0.416,0,1,0,1,0.268,0.427,0.287,0.071,0.334,0.024,0.374
     motion:
       threshold: 30
@@ -585,7 +585,7 @@ cameras:
         motion_mask_1:
           friendly_name: Motion Mask 1
           enabled: true
-          coordinates: 
+          coordinates:
             0,0,0,0.402,0.228,0.532,0.434,0.452,0.594,0.445,0.809,0.482,1,0.468,1,0.412,1,0.293,1,0.238,1,0,0.034,0
 review:
   genai:
