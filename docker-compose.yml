@@ -47,7 +47,7 @@ services:
       - FRIGATE_MQTT_USER
       - FRIGATE_MQTT_PASSWORD
       - PLUS_API_KEY
-      - GOOGLE_GEMINI_API_KEY
+      - FRIGATE_GENAI_API_KEY
     depends_on:
       mqtt:
         condition: service_healthy
