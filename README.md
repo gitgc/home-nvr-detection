@@ -30,9 +30,9 @@ graph TB
     GPU["Intel GPU<br>QSV H.264 Decode"]
     Disk[("NVR Storage<br>/nvr-media/frigate")]
 
-    C1 & C2 & C3 & C4 & C5 -->|RTSP| Scrypted
+    C1 & C2 & C3 & C4 & C5 & C6 -->|RTSP| Scrypted
     Scrypted -->|"RTSP restream<br>host.docker.internal"| Frigate
-    C6 <-->|"HTTP-FLV + RTSP backchannel<br>(two-way talk)"| Frigate
+    Frigate -.->|"RTSP backchannel<br>(two-way talk)"| C6
     Frigate <-->|events| MQTT
     TPU & GPU --> Frigate
     Frigate --> Disk
