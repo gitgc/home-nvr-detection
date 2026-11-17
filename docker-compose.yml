@@ -63,6 +63,8 @@ services:
       - "cam-exterior.garage.coia.io:192.168.3.7"
       - "cam.entrance.coia.io:192.168.3.87"
       - "cam.roaming.coia.io:192.168.1.156"
+      # TODO: set the doorbell's reserved DHCP IP and uncomment
+      # - "cam.front-doorbell.coia.io:192.168.x.x"
       - "host.docker.internal:host-gateway"
     healthcheck:
       <<: *health_check_defaults

@@ -169,6 +169,15 @@ go2rtc:
       - rtsp://host.docker.internal:34593/edf8fc8483d412f2
     roaming:
       - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.roaming.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+    # Reolink Video Doorbell (WiFi). Connected directly (not via Scrypted) so go2rtc
+    # can use the RTSP backchannel for two-way talk. HTTP-FLV carries video/audio for
+    # stability; the RTSP source is only there to provide the talk backchannel.
+    # #audio=opus is required for WebRTC playback in the browser.
+    front-doorbell:
+      - "ffmpeg:http://cam.front-doorbell.{FRIGATE_CAM_DOMAIN}/flv?port=1935&app=bcs&stream=channel0_main.bcs&user={FRIGATE_RTSP_USER}&password={FRIGATE_RTSP_PASSWORD}#video=copy#audio=copy#audio=opus"
+      - "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.front-doorbell.{FRIGATE_CAM_DOMAIN}:554/Preview_01_sub"
+    front-doorbell-sub:
+      - "ffmpeg:http://cam.front-doorbell.{FRIGATE_CAM_DOMAIN}/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user={FRIGATE_RTSP_USER}&password={FRIGATE_RTSP_PASSWORD}"
   webrtc:
     candidates:
       - 192.168.1.86:8555
@@ -587,6 +596,63 @@ cameras:
           enabled: true
           coordinates:
             0,0,0,0.402,0.228,0.532,0.434,0.452,0.594,0.445,0.809,0.482,1,0.468,1,0.412,1,0.293,1,0.238,1,0,0.034,0
+
+  front-doorbell:
+    lpr:
+      enabled: false
+    # Detect on the 640x480 sub stream; record the 2560x1920 main stream.
+    # Two-way talk is served from the main go2rtc stream (front-doorbell).
+    detect:
+      width: 640
+      height: 480
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/front-doorbell
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+            - audio
+        - path: rtsp://127.0.0.1:8554/front-doorbell-sub
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    audio:
+      enabled: true
+    objects:
+      track:
+        - face
+        - person
+        - package
+        - dog
+        - cat
+        - bicycle
+        - bear
+        - deer
+        - fedex
+        - ups
+        - usps
+        - amazon
+      genai:
+        use_snapshot: false
+        objects:
+          - bear
+          - cat
+          - deer
+          - dog
+          - face
+          - package
+          - person
+          - ups
+          - usps
+          - amazon
+    # TODO: add motion masks (timestamp overlay) and porch zone once mounted.
+    motion:
+      threshold: 40
+      contour_area: 30
+      improve_contrast: true
+    review:
+      genai:
+        image_source: preview
 review:
   genai:
     enabled: true

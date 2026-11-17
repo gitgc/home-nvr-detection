@@ -12,6 +12,7 @@ graph TB
         C3[garage-yard]
         C4[drive]
         C5[garden]
+        C6[front-doorbell]
     end
 
     subgraph Stack["Docker Compose Stack"]
@@ -31,6 +32,7 @@ graph TB
 
     C1 & C2 & C3 & C4 & C5 -->|RTSP| Scrypted
     Scrypted -->|"RTSP restream<br>host.docker.internal"| Frigate
+    C6 <-->|"HTTP-FLV + RTSP backchannel<br>(two-way talk)"| Frigate
     Frigate <-->|events| MQTT
     TPU & GPU --> Frigate
     Frigate --> Disk
