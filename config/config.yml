@@ -176,8 +176,6 @@ go2rtc:
     doorbell:
       - "ffmpeg:rtsp://host.docker.internal:41829/9708911ec1eea6dc#video=copy#audio=copy#audio=opus"
       - "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.front-doorbell.{FRIGATE_CAM_DOMAIN}:554/Preview_01_sub"
-    doorbell-sub:
-      - rtsp://host.docker.internal:41829/7a0a8874884a4509
   webrtc:
     candidates:
       - 192.168.1.86:8555
@@ -600,22 +598,19 @@ cameras:
   doorbell:
     lpr:
       enabled: false
-    # Detect on the 640x480 sub stream; record the 2560x1920 main stream.
-    # Two-way talk is served from the main go2rtc stream (doorbell).
+    # Detect and record on the 2560x1920 main stream (camera outputs 20fps;
+    # detect samples at the global 10fps). Two-way talk is served from the same
+    # go2rtc stream.
     detect:
-      width: 640
-      height: 480
+      width: 2560
+      height: 1920
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/doorbell
-          input_args: preset-rtsp-restream
           roles:
             - record
-            - audio
-        - path: rtsp://127.0.0.1:8554/doorbell-sub
-          input_args: preset-rtsp-restream
-          roles:
             - detect
+            - audio
     audio:
       enabled: true
     objects:
