@@ -174,12 +174,10 @@ go2rtc:
     # backchannel, so a direct RTSP source to the doorbell is added purely for
     # two-way talk. #audio=opus is required for WebRTC playback in the browser.
     front-doorbell:
-      # TODO: replace with the Scrypted rebroadcast URL (default/main stream)
-      - "ffmpeg:rtsp://host.docker.internal:PORT/SCRYPTED_MAIN_ID#video=copy#audio=copy#audio=opus"
+      - "ffmpeg:rtsp://host.docker.internal:41829/9708911ec1eea6dc#video=copy#audio=copy#audio=opus"
       - "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.front-doorbell.{FRIGATE_CAM_DOMAIN}:554/Preview_01_sub"
     front-doorbell-sub:
-      # TODO: replace with the Scrypted rebroadcast URL (low-resolution stream)
-      - rtsp://host.docker.internal:PORT/SCRYPTED_SUB_ID
+      - rtsp://host.docker.internal:41829/7a0a8874884a4509
   webrtc:
     candidates:
       - 192.168.1.86:8555
