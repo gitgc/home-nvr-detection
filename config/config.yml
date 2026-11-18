@@ -169,6 +169,13 @@ go2rtc:
       - rtsp://host.docker.internal:34593/edf8fc8483d412f2
     roaming:
       - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.roaming.{FRIGATE_CAM_DOMAIN}:554/cam/realmonitor?channel=1&subtype=0&authbasic=64
+    # Reolink Video Doorbell (WiFi). Video/audio come via the Scrypted rebroadcast,
+    # like the other cameras. Scrypted's rebroadcast doesn't expose a talk
+    # backchannel, so a direct RTSP source to the doorbell is added purely for
+    # two-way talk. #audio=opus is required for WebRTC playback in the browser.
+    doorbell:
+      - "ffmpeg:rtsp://host.docker.internal:41829/9708911ec1eea6dc#video=copy#audio=copy#audio=opus"
+      - "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.front-doorbell.{FRIGATE_CAM_DOMAIN}:554/Preview_01_sub"
   webrtc:
     candidates:
       - 192.168.1.86:8555
@@ -587,6 +594,60 @@ cameras:
           enabled: true
           coordinates:
             0,0,0,0.402,0.228,0.532,0.434,0.452,0.594,0.445,0.809,0.482,1,0.468,1,0.412,1,0.293,1,0.238,1,0,0.034,0
+
+  doorbell:
+    lpr:
+      enabled: false
+    # Detect and record on the 2560x1920 main stream (camera outputs 20fps;
+    # detect samples at the global 10fps). Two-way talk is served from the same
+    # go2rtc stream.
+    detect:
+      width: 2560
+      height: 1920
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/doorbell
+          roles:
+            - record
+            - detect
+            - audio
+    audio:
+      enabled: true
+    objects:
+      track:
+        - face
+        - person
+        - package
+        - dog
+        - cat
+        - bicycle
+        - bear
+        - deer
+        - fedex
+        - ups
+        - usps
+        - amazon
+      genai:
+        use_snapshot: false
+        objects:
+          - bear
+          - cat
+          - deer
+          - dog
+          - face
+          - package
+          - person
+          - ups
+          - usps
+          - amazon
+    # TODO: add motion masks (timestamp overlay) and porch zone once mounted.
+    motion:
+      threshold: 40
+      contour_area: 30
+      improve_contrast: true
+    review:
+      genai:
+        image_source: preview
 review:
   genai:
     enabled: true
