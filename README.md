@@ -12,7 +12,7 @@ graph TB
         C3[garage-yard]
         C4[drive]
         C5[garden]
-        C6[front-doorbell]
+        C6[doorbell]
     end
 
     subgraph Stack["Docker Compose Stack"]

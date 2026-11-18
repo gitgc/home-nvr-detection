@@ -173,10 +173,10 @@ go2rtc:
     # like the other cameras. Scrypted's rebroadcast doesn't expose a talk
     # backchannel, so a direct RTSP source to the doorbell is added purely for
     # two-way talk. #audio=opus is required for WebRTC playback in the browser.
-    front-doorbell:
+    doorbell:
       - "ffmpeg:rtsp://host.docker.internal:41829/9708911ec1eea6dc#video=copy#audio=copy#audio=opus"
       - "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@cam.front-doorbell.{FRIGATE_CAM_DOMAIN}:554/Preview_01_sub"
-    front-doorbell-sub:
+    doorbell-sub:
       - rtsp://host.docker.internal:41829/7a0a8874884a4509
   webrtc:
     candidates:
@@ -597,22 +597,22 @@ cameras:
           coordinates:
             0,0,0,0.402,0.228,0.532,0.434,0.452,0.594,0.445,0.809,0.482,1,0.468,1,0.412,1,0.293,1,0.238,1,0,0.034,0
 
-  front-doorbell:
+  doorbell:
     lpr:
       enabled: false
     # Detect on the 640x480 sub stream; record the 2560x1920 main stream.
-    # Two-way talk is served from the main go2rtc stream (front-doorbell).
+    # Two-way talk is served from the main go2rtc stream (doorbell).
     detect:
       width: 640
       height: 480
     ffmpeg:
       inputs:
-        - path: rtsp://127.0.0.1:8554/front-doorbell
+        - path: rtsp://127.0.0.1:8554/doorbell
           input_args: preset-rtsp-restream
           roles:
             - record
             - audio
-        - path: rtsp://127.0.0.1:8554/front-doorbell-sub
+        - path: rtsp://127.0.0.1:8554/doorbell-sub
           input_args: preset-rtsp-restream
           roles:
             - detect
