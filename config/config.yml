@@ -316,11 +316,9 @@ cameras:
       threshold: 40
       contour_area: 30
       improve_contrast: true
-      mask:
     review:
       genai:
         image_source: preview
-    zones:
 
   entrance:
     lpr:
